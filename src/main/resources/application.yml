@@ -1,7 +1,7 @@
 google:
   api:
     places:
-      key: ${GOOGLE_MAP_API_KEY}
+      key: ${GOOGLE_PLACES_API_KEY}
       details:
         url: "https://maps.googleapis.com/maps/api/place/details/json"
       geocoding:
