@@ -1,0 +1,4 @@
+google:
+  api:
+    places:
+      key: ${GOOGLE_MAP_API_KEY}
