@@ -3,10 +3,14 @@ package com.gihae.googleplaces.places;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+@RequiredArgsConstructor
+@Service
 public class GeocodingService {
 
     @Value("${google.api.places.key}")
@@ -17,7 +21,7 @@ public class GeocodingService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private String getGooglePlaceId(String name, String address) {
+    public String getGooglePlaceId(String name, String address) {
         String url = createGooglePlaceIdUrl(name, address);
         String response = restTemplate.getForObject(url, String.class);
         return extractPlaceId(response);
