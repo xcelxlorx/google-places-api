@@ -3,6 +3,7 @@ package com.gihae.googleplaces.places;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gihae.googleplaces.review.Review;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -73,14 +74,25 @@ public class DetailsService {
             }
 
             //영업 시간
-            List<String> operationTimes = new ArrayList<>();
+            List<String> openingHours = new ArrayList<>();
             JsonNode weekdayTextNode = result.path("opening_hours").path("weekday_text");
             for (int i = 0; i < weekdayTextNode.size(); i++) {
-                String operationTime = weekdayTextNode.get(i).asText();
-                operationTimes.add(operationTime);
+                String openingHour = weekdayTextNode.get(i).asText();
+                openingHours.add(openingHour);
             }
 
-            return new PlaceResponse.GetPlaceDto(name, address, phoneNumber, rating, images, operationTimes);
+            //리뷰
+            List<Review> reviews = new ArrayList<>();
+            JsonNode reviewNode = result.path("reviews");
+            for (int i = 0; i < reviewNode.size(); i++) {
+                String authorName = reviewNode.get(i).path("author_name").asText();
+                String profileUrl = reviewNode.get(i).path("profile_photo_url").asText();
+                String authorRating = reviewNode.get(i).path("rating").asText();
+                String text = reviewNode.get(i).path("text").asText();
+                reviews.add(new Review(authorName, profileUrl, authorRating, text));
+            }
+
+            return new PlaceResponse.GetPlaceDto(name, address, phoneNumber, rating, images, openingHours, reviews);
         } catch (JsonProcessingException e) {
             throw new RuntimeException();
         }
