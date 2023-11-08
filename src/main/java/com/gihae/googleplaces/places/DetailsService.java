@@ -32,6 +32,7 @@ public class DetailsService {
         String googlePlaceId = geocodingService.getGooglePlaceId(name, address);
         String url = createPlaceUrl(googlePlaceId);
         String response = restTemplate.getForObject(url, String.class);
+        System.out.println("response=" + response);
         return extractPlaceDetails(response, name);
     }
 
@@ -51,17 +52,18 @@ public class DetailsService {
                 throw new RuntimeException();
             }
 
-            //볼링장 이름
+            //이름
             String name = result.path("name").asText();
             if (!placeName.equals(name)) {
                 throw new RuntimeException();
             }
 
-            //볼링장 주소, 전화번호
+            //주소, 전화번호, 평점
             String address = result.path("formatted_address").asText();
             String phoneNumber = result.path("formatted_phone_number").asText();
+            String rating = result.path("rating").asText();
 
-            //볼링장 사진
+            //사진
             List<String> images = new ArrayList<>();
             JsonNode photoNode = result.path("photos");
             for (int i = 0; i < photoNode.size(); i++) {
@@ -70,7 +72,7 @@ public class DetailsService {
                 images.add(photoUrl);
             }
 
-            //볼링장 영업 시간
+            //영업 시간
             List<String> operationTimes = new ArrayList<>();
             JsonNode weekdayTextNode = result.path("opening_hours").path("weekday_text");
             for (int i = 0; i < weekdayTextNode.size(); i++) {
@@ -78,7 +80,7 @@ public class DetailsService {
                 operationTimes.add(operationTime);
             }
 
-            return new PlaceResponse.GetPlaceDto(name, images, address, phoneNumber, operationTimes);
+            return new PlaceResponse.GetPlaceDto(name, address, phoneNumber, rating, images, operationTimes);
         } catch (JsonProcessingException e) {
             throw new RuntimeException();
         }
