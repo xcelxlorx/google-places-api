@@ -19,7 +19,8 @@ public class DetailsService {
     @Value("${google.api.places.key}")
     private String apiKey;
 
-    private final String PLACES_API_URL = "https://maps.googleapis.com/maps/api/place/details/json";
+    @Value("${google.api.places.details.url}")
+    private String detailsUrl;
 
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -35,7 +36,7 @@ public class DetailsService {
     }
 
     private String createPlaceUrl(String placeId) {
-        return UriComponentsBuilder.fromHttpUrl(PLACES_API_URL)
+        return UriComponentsBuilder.fromHttpUrl(detailsUrl)
                 .queryParam("language", "ko")
                 .queryParam("place_id", placeId)
                 .queryParam("key", apiKey)

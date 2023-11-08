@@ -18,7 +18,8 @@ public class PhotoService {
     @Value("${google.api.places.key}")
     private String apiKey;
 
-    private final String PHOTO_API_URL = "https://maps.googleapis.com/maps/api/place/photo";
+    @Value("${google.api.places.photo.url}")
+    private String photoUrl;
 
     private final RestTemplate restTemplate = new RestTemplate(new SimpleClientHttpRequestFactory() {
         @Override
@@ -33,7 +34,7 @@ public class PhotoService {
     }
 
     private String createImageUrl(String photoReference) {
-        return UriComponentsBuilder.fromHttpUrl(PHOTO_API_URL)
+        return UriComponentsBuilder.fromHttpUrl(photoUrl)
                 .queryParam("maxwidth", 400)
                 .queryParam("photoreference", photoReference)
                 .queryParam("key", apiKey)

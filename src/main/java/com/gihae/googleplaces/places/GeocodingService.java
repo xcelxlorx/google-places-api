@@ -16,7 +16,8 @@ public class GeocodingService {
     @Value("${google.api.places.key}")
     private String apiKey;
 
-    private final String GEOCODING_API_URL = "https://maps.googleapis.com/maps/api/geocode/json";
+    @Value("${google.api.places.geocoding.url}")
+    private String geocodingUrl;
 
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -42,7 +43,7 @@ public class GeocodingService {
             addressBuilder.append(districtName);
         }
 
-        return UriComponentsBuilder.fromHttpUrl(GEOCODING_API_URL)
+        return UriComponentsBuilder.fromHttpUrl(geocodingUrl)
                 .queryParam("language", "ko")
                 .queryParam("address", addressBuilder)
                 .queryParam("key", apiKey)
