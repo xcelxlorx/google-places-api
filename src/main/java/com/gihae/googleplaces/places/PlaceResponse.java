@@ -1,5 +1,7 @@
 package com.gihae.googleplaces.places;
 
+import com.gihae.googleplaces.review.Review;
+
 import java.util.List;
 
 public class PlaceResponse {
@@ -9,6 +11,7 @@ public class PlaceResponse {
             String phoneNumber,
             String rating,
             List<String> images,
-            List<String> operationTime
+            List<String> openingHours,
+            List<Review> reviews
     ){}
 }
