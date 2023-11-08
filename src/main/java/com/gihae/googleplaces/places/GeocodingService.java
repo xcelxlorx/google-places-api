@@ -28,19 +28,19 @@ public class GeocodingService {
         return extractPlaceId(response);
     }
 
-    private String createGooglePlaceIdUrl(String name, String districtName) {
+    private String createGooglePlaceIdUrl(String name, String address) {
         StringBuilder addressBuilder = new StringBuilder();
 
         if (name != null) {
             addressBuilder.append(name);
         }
 
-        if (name != null && districtName != null) {
+        if (name != null && address != null) {
             addressBuilder.append(",");
         }
 
-        if (districtName != null) {
-            addressBuilder.append(districtName);
+        if (address != null) {
+            addressBuilder.append(address);
         }
 
         return UriComponentsBuilder.fromHttpUrl(geocodingUrl)
